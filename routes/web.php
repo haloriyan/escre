@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return bcrypt("inikatasandi");
+    return redirect()->route('user.loginPage');
 });
 Route::get('cron', "UserController@runCron");
 
