@@ -1,0 +1,35 @@
+body {
+    background-color: #3f6c8a60;
+}
+a {
+    color: var(--primaryColor);
+}
+
+.content {
+    position: absolute;
+    top: 60px;left: 30%;right: 30%;
+}
+.content .logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.content .logo img {
+    width: 40%;
+}
+.content form {
+    background-color: #fff;
+    color: #444;
+    padding: 1px;
+    border-radius: 6px;
+}
+
+@media (max-width: 480px) {
+    .content {
+        left: 0%;right: 0%;
+    }
+    .content form {
+        border-radius: 0px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+}
