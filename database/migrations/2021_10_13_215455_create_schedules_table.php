@@ -25,6 +25,7 @@ class CreateSchedulesTable extends Migration
             $table->text('notes')->nullable();
             $table->string('status');
             $table->tinyInteger('status_code');
+            $table->tinyInteger('has_notified')->nullable();
             $table->timestamps();
         });
     }

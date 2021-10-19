@@ -15,8 +15,14 @@ class UserController extends Controller
 {
     public static function me() {
         $myData = Auth::user();
-        $name = explode(" ", $myData->name);
-        $myData->first_name = $name[0];
+        if ($myData != "") {
+            $name = explode(" ", $myData->name);
+            $myData->first_name = $name[0];
+            $myData->notifications = NotifyController::get([
+                ['user_id', $myData->id],
+                ['has_read', NULL]
+            ])->orderBy('created_at', 'DESC')->get('id');
+        }
 
         return $myData;
     }
@@ -27,6 +33,10 @@ class UserController extends Controller
         return User::where($filter);
     }
     public function loginPage(Request $request) {
+        $myData = self::me();
+        if ($myData != "") {
+            return redirect()->route('user.home');
+        }
         $message = Session::get('message');
         return view('user.login', [
             'message' => $message,
@@ -89,16 +99,23 @@ class UserController extends Controller
         
         return $schedules;
     }
+    public function getMyConnect($myData, $toGet = null) {
+        $filterConnect = $myData->role == "assistant" ? "secretary_id" : "headship_id";
+        $connects = ConnectController::get([[$filterConnect, $myData->id]]);
+        return $connects;
+    }
     public function home() {
         global $myData;
         $myData = self::me();
         $dateNow = date('Y-m-d');
         $query = ScheduleController::get([['date', 'LIKE', "%".$dateNow."%"]]);
         $schedules = $this->getMySchedules($query)->get('id');
+        $connects = $this->getMyConnect($myData)->get('id');
 
         return view('user.home', [
             'myData' => $myData,
             'schedules' => $schedules,
+            'connects' => $connects,
         ]);
     }
     public function schedule() {
@@ -119,7 +136,7 @@ class UserController extends Controller
         
         foreach ($schedulesRaw as $item) {
             $date = explode(" ", $item->date);
-            if ($date[0] == date('Y-m-d')) {
+            if ($date[0] == date('Y-m-d') && $item->status_code == 1) {
                 $schedules['today'][] = $item;
             } else {
                 $schedules['coming'][] = $item;
@@ -195,12 +212,60 @@ class UserController extends Controller
         return redirect()->route('user.profile')->with(['message' => "Profil berhasil diubah"]);
     }
     public function runCron() {
-        Log::info('behrasil');
+        // Log::info('behrasil');
+        $now = Carbon::now();
+        $dateNow = $now->format('Y-m-d H:i:s');
+        $maxTime = $now->addMinutes(30)->format('Y-m-d H:i:s');
+
+        $query = ScheduleController::get([
+            ['date', ">=", $dateNow],
+            ['date', "<=", $maxTime],
+            ['status_code', 1],
+            ['has_notified', NULL]
+        ])
+        ->with(['connection.headships','connection.secretaries']);
+
+        $schedules = $query->get();
+        // return $schedules;
+
+        foreach ($schedules as $schedule) {
+            $sendMailToHeadship = NotifyController::reminder($schedule);
+            // echo NotifyController::reminder($schedule)."<br /><br />";
+        }
+        
+        // $query->update(['has_notified' => 1]);
+
+        return $schedules;
     }
     public function push() {
         $myData = self::me();
         return view('user.push', [
             'myData' => $myData
         ]);
+    }
+    public function notification() {
+        $myData = self::me();
+        $query = NotifyController::get([
+            ['user_id', $myData->id]
+        ]);
+        
+        $notifications = $query->orderBy('created_at', 'DESC')
+        ->take(25)
+        ->get();
+        
+        $query->update(['has_read' => 1]);
+        $myData = self::me();
+
+        return view('user.notification', [
+            'myData' => $myData,
+            'notifications' => $notifications
+        ]);
+    }
+    public function updateWebpushData(Request $request) {
+        $user = User::where('id', $request->id)->update([
+            'webpush_data' => $request->webpush_data
+        ]);
+
+        return response()->json(['status' => 200]);
     }
 }

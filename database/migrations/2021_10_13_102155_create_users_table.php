@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('role');
             $table->date('premium_until')->nullable();
             $table->tinyInteger('is_email_verified')->nullable();
+            $table->text('webpush_data')->nullable();
             $table->timestamps();
         });
     }

@@ -21,19 +21,23 @@
         <div class="wrap">
             <div class="bagi lebar-70">
                 <h2 class="mt-0">{{ $item->title }}</h2>
-                @if ($item->place_type == "maps")
-                    @php
-                        $place = explode("|", $item->place);
-                    @endphp
-                    <div class="mt-2">
+                <div class="mt-2">
+                    @if ($item->place_type == "maps")
+                        @php
+                            $place = explode("|", $item->place);
+                        @endphp
                         <a href="{{ $place[1] }}" target="_blank">
                             <i class="fas fa-map-marker mr-1"></i> {{ $place[0] }}
                         </a>
-                    </div>
-                    <div class="mt-1">
-                        <i class="fas fa-user mr-1"></i> {{ $item->connection->{$relation}->name }}
-                    </div>
-                @endif
+                    @else
+                        <a href="{{ $item->place }}" target="_blank">
+                            <i class="fas fa-video mr-1"></i> Online Conference
+                        </a>
+                    @endif
+                </div>
+                <div class="mt-1">
+                    <i class="fas fa-user mr-1"></i> {{ $item->connection->{$relation}->name }}
+                </div>
             </div>
             <div class="bagi lebar-30 rata-kanan">
                 <h2 class="mt-0 teks-hitam">

@@ -24,7 +24,7 @@
     <div class="wrap">
         <div class="bg-putih rounded bayangan-5 smallPadding">
             <div class="wrap super">
-                <h2>4 <span>connects</span></h2>
+                <h2>{{ $connects->count() }} <span>connects</span></h2>
                 <div>total</div>
             </div>
         </div>

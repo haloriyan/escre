@@ -24,19 +24,23 @@
             <div class="wrap">
                 <div class="bagi lebar-75">
                     <h2 class="teks-hitam">{{ $schedule->title }}</h2>
-                    @if ($schedule->place_type == "maps")
-                        @php
-                            $place = explode("|", $schedule->place);
-                        @endphp
-                        <div class="mt-2">
+                    <div class="mt-2">
+                        @if ($schedule->place_type == "maps")
+                            @php
+                                $place = explode("|", $schedule->place);
+                            @endphp
                             <a href="{{ $place[1] }}" target="_blank">
                                 <i class="fas fa-map-marker mr-1"></i> {{ $place[0] }}
                             </a>
-                        </div>
-                        <div class="mt-1">
-                            <i class="fas fa-user mr-1"></i> {{ $schedule->connection->{$relation}->name }}
-                        </div>
-                    @endif
+                        @else
+                            <a href="{{ $schedule->place }}">
+                                <i class="fas fa-video mr-1"></i> Online Conference
+                            </a>
+                        @endif
+                    </div>
+                    <div class="mt-1">
+                        <i class="fas fa-user mr-1"></i> {{ $schedule->connection->{$relation}->name }}
+                    </div>
                 </div>
                 <div class="bagi lebar-25">
                     <h2 class="teks-hitam">
@@ -69,16 +73,20 @@
             <div class="wrap">
                 <div class="bagi lebar-75">
                     <h2 class="teks-hitam">{{ $schedule->title }}</h2>
-                    @if ($schedule->place_type == "maps")
+                    <div class="mt-1">
+                        @if ($schedule->place_type == "maps")
                         @php
                             $place = explode("|", $schedule->place);
                         @endphp
-                        <div class="mt-1">
-                            <a href="{{ $place[1] }}" target="_blank">
-                                <i class="fas fa-map-marker mr-1"></i> {{ $place[0] }}
-                            </a>
-                        </div>
+                        <a href="{{ $place[1] }}" target="_blank">
+                            <i class="fas fa-map-marker mr-1"></i> {{ $place[0] }}
+                        </a>
+                    @else
+                        <a href="{{ $schedule->place }}">
+                            <i class="fas fa-video mr-1"></i> Online Conference
+                        </a>
                     @endif
+                    </div>
                     <div class="mt-1">
                         <i class="fas fa-user mr-1"></i> {{ $schedule->connection->{$relation}->name }}
                     </div>

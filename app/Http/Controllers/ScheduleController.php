@@ -49,12 +49,16 @@ class ScheduleController extends Controller
         $accepting = $data->update(['status_code' => 1]);
         $schedule = $data->first();
 
+        $notify = NotifyController::scheduleConfirmation($data, 'Diterima');
+
         return redirect()->route('user.schedule')->with(['message' => "Schedule ".$schedule->title." telah disetujui"]);
     }
     public function decline($id) {
         $data = Schedule::where('id', $id);
         $accepting = $data->update(['status_code' => 0]);
         $schedule = $data->first();
+
+        $notify = NotifyController::scheduleConfirmation($data, 'Ditolak');
 
         return redirect()->route('user.schedule')->with(['message' => "Schedule ".$schedule->title." ditolak"]);
     }

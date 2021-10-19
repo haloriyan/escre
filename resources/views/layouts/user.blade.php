@@ -21,9 +21,12 @@
                 <i class="fas fa-plus"></i>
             </li>
         </a>
-        <a href="#">
+        <a href="{{ route('user.notification') }}">
             <li class="item circle">
                 <i class="fas fa-bell"></i>
+                @if ($myData->notifications->count() != 0)
+                    <div class="counter">{{ $myData->notifications->count() }}</div>
+                @endif
             </li>
         </a>
         <a href="{{ route('user.profile') }}">
@@ -71,6 +74,7 @@
 </nav>
 
 <div class="content">
+    <input type="hidden" id="myData" value="{{ $myData }}">
     @yield('content')
 </div>
 
@@ -92,6 +96,7 @@
         alert('not supported');
     }
 
+    let myData = JSON.parse(select("input#myData").value);
     let push = {
         publicKey: "BNjnxNlldlMeh9jWqFkgBPII2U9_WttBijMnbOi41-fJZCV6DuXIfywRuXNAO7ZBddP-7EzRg7vA4lJQhOsiHMg",
         privateKey: "2LLW9bvzRdkg9Ak_D3IcrovCKRDTy8zaCq5AgFcERgU",
@@ -101,6 +106,7 @@
     function initializeUI() {
         if (push.isSubscribed) {
             // unsub
+            // unsubscribeUser();
         } else {
             subscribeUser();
         }
@@ -127,10 +133,32 @@
         })
         .then(subscription => {
             console.log('user subscribed', subscription);
-            // select(".content").innerText = JSON.stringify(subscription);
+            let pushData = btoa(JSON.stringify(subscription));
+            let req = post("{{ route('api.user.updateWebpushData') }}", {
+                id: myData.id,
+                webpush_data: pushData
+            })
+            .then(res => {
+                console.log(res);
+            });
+
             push.isSubscribed = true;
         })
         .catch(err => console.log(err));
+    }
+
+    function unsubscribeUser() {
+        swRegistration.pushManager.getSubscription()
+        .then(subscription => {
+            if (subscription) {
+                return subscription.unsubscribe();
+            }
+        })
+        .catch(err => console.log(err))
+        .then(() => {
+            console.log('user is unsubscribed');
+            push.isSubscribed = false;
+        });
     }
 
     const toggleMenu = () => {

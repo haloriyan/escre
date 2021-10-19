@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route('user.loginPage');
+    // return redirect()->route('user.loginPage');
+    phpinfo();
 });
 Route::get('cron', "UserController@runCron");
 
@@ -16,6 +17,7 @@ Route::post('register', "UserController@register")->name("user.register");
 Route::get('logout', "UserController@logout")->name("user.logout");
 Route::get('profile', "UserController@profile")->name("user.profile");
 Route::post('profile', "UserController@updateProfile")->name("user.profile.update");
+Route::get('notification', "UserController@notification")->name("user.notification");
 
 Route::get('home', "UserController@home")->name("user.home")->middleware('User');
 Route::group(['prefix' => "schedule"], function () {

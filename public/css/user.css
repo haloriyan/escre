@@ -39,6 +39,16 @@ header nav .item.circle {
     color: #3f6c8a;
     text-align: center;
 }
+header nav .item .counter {
+    position: fixed;
+    top: 15px;
+    background-color: #e74c3c;
+    color: #fff;
+    display: inline-block;
+    width: 25px;
+    line-height: 25px;
+    border-radius: 55px;
+}
 header nav .item.text {
     color: #555;
     font-size: 20px;

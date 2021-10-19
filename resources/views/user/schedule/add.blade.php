@@ -45,11 +45,11 @@
                     <option value="maps">Google Maps</option>
                     <option value="zoom">Zoom</option>
                 </select>
-                <input type="text" class="box" id="placeSearch">
             </div>
             <div class="mt-2">
                 <div class="wrap">
                     <div id="mapArea" class="placeTypeArea">
+                        <input type="text" class="box" id="placeSearch">
                         <div id="map" class="tinggi-300"></div>
                     </div>
                     <div id="zoomArea" class="placeTypeArea d-none">
