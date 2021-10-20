@@ -23,6 +23,9 @@ a {
     border-radius: 6px;
 }
 
+.content form img {
+    height: 90px;
+}
 
 @media (max-width: 480px) {
     .content {

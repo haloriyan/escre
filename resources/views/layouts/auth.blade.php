@@ -17,24 +17,19 @@
         <img src="{{ asset('images/secrive-nobg.png') }}">
     </div>
     @yield('content')
-    <form action="#" class="mt-4 mb-5">
-        <div class="bagi bagi-3 rata-tengah">
-            <div class="wrap super">
-                <img src="{{ asset('images/unair.jpeg') }}" class="lebar-100">
+    <form action="#" class="mt-4 mb-5 smallPadding">
+        <div class="wrap">
+            <div class="bagi bagi-3 rata-tengah">
+                <img src="{{ asset('images/unair.png') }}">
             </div>
-        </div>
-        <div class="bagi bagi-3 rata-tengah">
-            <div class="wrap super">
-                <img src="{{ asset('images/vokasi.jpeg') }}" class="lebar-100 mt-3">
+            <div class="bagi bagi-3 rata-tengah">
+                <img src="{{ asset('images/vokasi.png') }}">
             </div>
-        </div>
-        <div class="bagi bagi-3 rata-tengah">
-            <div class="wrap super">
-                <img src="{{ asset('images/ap-unair.jpeg') }}" class="lebar-100">
+            <div class="bagi bagi-3 rata-tengah">
+                <img src="{{ asset('images/ap-unair.png') }}">
             </div>
+            <div class="rata-tengah mt-2">Created by Secrive Team</div>
         </div>
-
-        <div class="rata-tengah pt-3 pb-3">Created by Secrive Team</div>
     </form>
 </div>
 
