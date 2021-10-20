@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    // return redirect()->route('user.loginPage');
-    phpinfo();
+    return redirect()->route('user.loginPage');
+    // phpinfo();
 });
 Route::get('cron', "UserController@runCron");
 

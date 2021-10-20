@@ -14,9 +14,16 @@
     
 <div class="content">
     <div class="logo">
-        <img src="{{ asset('images/logo.png') }}">
+        <img src="{{ asset('images/secrive-nobg.png') }}">
     </div>
     @yield('content')
+    <form action="#" class="mt-4 mb-5">
+        <div class="wrap rata-tengah">
+            <img src="{{ asset('images/unair.jpeg') }}">
+            <img src="{{ asset('images/vokasi.jpeg') }}">
+            <img src="{{ asset('images/ap-unair.jpeg') }}">
+        </div>
+    </form>
 </div>
 
 <script src="{{ asset('js/base.js') }}"></script>

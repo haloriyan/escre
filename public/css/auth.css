@@ -14,13 +14,17 @@ a {
     margin-bottom: 40px;
 }
 .content .logo img {
-    width: 40%;
+    width: 25%;
 }
 .content form {
     background-color: #fff;
     color: #444;
     padding: 1px;
     border-radius: 6px;
+}
+
+.content form img {
+    height: 100px;
 }
 
 @media (max-width: 480px) {
