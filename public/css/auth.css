@@ -23,9 +23,6 @@ a {
     border-radius: 6px;
 }
 
-.content form img {
-    height: 100px;
-}
 
 @media (max-width: 480px) {
     .content {

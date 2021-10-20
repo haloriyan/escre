@@ -18,10 +18,21 @@
     </div>
     @yield('content')
     <form action="#" class="mt-4 mb-5">
-        <div class="wrap rata-tengah">
-            <img src="{{ asset('images/unair.jpeg') }}">
-            <img src="{{ asset('images/vokasi.jpeg') }}">
-            <img src="{{ asset('images/ap-unair.jpeg') }}">
+        <div class="bagi bagi-3 rata-tengah">
+            <div class="wrap super">
+                <img src="{{ asset('images/unair.jpeg') }}" class="lebar-100">
+            </div>
+        </div>
+        <div class="bagi bagi-3 rata-tengah">
+            <div class="wrap super">
+                <img src="{{ asset('images/vokasi.jpeg') }}" class="lebar-100 mt-3">
+            </div>
+        </div>
+        <div class="bagi bagi-3 rata-tengah">
+            <div class="wrap super">
+                <img src="{{ asset('images/ap-unair.jpeg') }}" class="lebar-100">
+            </div>
+        </div>
         </div>
     </form>
 </div>
