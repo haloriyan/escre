@@ -33,7 +33,8 @@
                 <img src="{{ asset('images/ap-unair.jpeg') }}" class="lebar-100">
             </div>
         </div>
-        </div>
+
+        <div class="rata-tengah pt-3 pb-3">Created by Secrive Team</div>
     </form>
 </div>
 
