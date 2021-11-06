@@ -18,9 +18,9 @@
     $roles = ["assistant","headship"];
 
     function isPremium($date) {
-        $now = Carbon::now();
         $due = Carbon::parse($date);
-        return $now >= $due;
+        $now = Carbon::now();
+        return $due >= $now ? true : false;
     }
 @endphp
     
@@ -47,6 +47,11 @@
             </select>
         </div>
         <br />
+        @if ($message != "")
+            <div class="bg-hijau-transparan rounded p-2 mb-1 mt-4">
+                {{ $message }}
+            </div>
+        @endif
         <table class="mt-4">
             <thead>
                 <tr>
@@ -98,10 +103,11 @@
             <h3>Edit User
                 <i class="fas fa-times ke-kanan pointer" onclick="hilangPopup('#editUser')"></i>
             </h3>
-            <form action="#" method="POST">
+            <form action="{{ route('admin.user.update') }}" method="POST">
                 {{ csrf_field() }}
+                <input type="hidden" name="id" id="id">
                 <div class="mt-2">Premium hingga tanggal :</div>
-                <input type="text" class="box" id="premium_until">
+                <input type="text" class="box" name="premium_until" id="premium_until">
 
                 <button class="lebar-100 mt-3 primer">Simpan perubahan</button>
             </form>
@@ -129,6 +135,7 @@
     const edit = data => {
         data = JSON.parse(data);
         munculPopup("#editUser");
+        select("#editUser #id").value = data.id;
         select("#editUser #premium_until").value = data.premium_until;
 
         flatpickr("#editUser #premium_until", {

@@ -43,6 +43,7 @@ Route::group(['prefix' => "admin"], function () {
 
     Route::get('dashboard', "AdminController@dashboard")->name("admin.dashboard")->middleware('Admin');
     Route::get('user', "AdminController@user")->name("admin.user")->middleware('Admin');
+    Route::post('user/update', "AdminController@updateUser")->name("admin.user.update")->middleware('Admin');
     Route::get('schedule', "AdminController@schedule")->name("admin.schedule")->middleware('Admin');
     
     Route::get('/', function () {

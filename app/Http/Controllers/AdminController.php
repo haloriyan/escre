@@ -66,6 +66,16 @@ class AdminController extends Controller
             'message' => $message
         ]);
     }
+    public function updateUser(Request $request) {
+        $id = $request->id;
+        $data = UserController::get([['id', $id]]);
+        $user = $data->first();
+        $updateData = $data->update([
+            'premium_until' => $request->premium_until
+        ]);
+
+        return redirect()->route('admin.user')->with(['message' => "Data user ".$user->name." berhasil diubah"]);
+    }
     public function schedule() {
         $myData = self::me();
         $message = Session::get('message');
