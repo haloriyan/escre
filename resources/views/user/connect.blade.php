@@ -4,6 +4,9 @@
 
 @php
     $relations = explode(".", $relation);
+    function displayRelation($relation) {
+        return config('dictionary')[$relation];
+    }
 @endphp
 
 @section('head.dependencies')
@@ -20,7 +23,7 @@
 <div class="bg-putih rounded bayangan-5 smallPadding">
     <div class="wrap">
         <form>
-            <div class="mt-2">Cari {{ $relations[0] }} :</div>
+            <div class="mt-2">Cari {{ displayRelation($relations[0]) }} :</div>
             <input type="text" class="box" name="username" value="{{ $request->username }}" placeholder="masukkan username dan tekan enter untuk mencari...">
         </form>
     </div>
@@ -49,8 +52,8 @@
             @endforeach
         @endif
     @else
-        <h2>Mencari {{ $relation }} "{{$request->username }}"</h2>
-        @if ($search->count() == 0)
+        <h2>Mencari {{ displayRelation($relations[0]) }} "{{$request->username }}"</h2>
+        @if ($search == "" || $search->count() == 0)
             <p>Tidak ada data</p>
         @else
             <div class="rata-tengah mt-5">
