@@ -93,7 +93,7 @@
             console.log("sw error", err);
         })
     } else {
-        alert('not supported');
+        console.log('not supported');
     }
 
     let myData = JSON.parse(select("input#myData").value);
