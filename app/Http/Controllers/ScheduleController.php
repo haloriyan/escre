@@ -28,7 +28,19 @@ class ScheduleController extends Controller
         ]);
     }
     public function store(Request $request) {
+        $myData = UserController::me();
         $datetime = $request->date." ".$request->time.":00";
+
+        // $connectID = $request->connect_id;
+        // $connection = ConnectController::get([['id', $connectID]])->first();
+        // return $connection->secretaries;
+        $status = "Delay";
+        $statusCode = 2;
+
+        if ($myData->role != "assistant") {
+            $status = "Diterima";
+            $statusCode = 1;
+        }
 
         $saveData = Schedule::create([
             'connect_id' => $request->connect_id,
@@ -38,9 +50,11 @@ class ScheduleController extends Controller
             'place_type' => $request->place_type,
             'place' => $request->place,
             'notes' => $request->notes,
-            'status' => "Delay",
-            'status_code' => 2
+            'status' => $status,
+            'status_code' => $statusCode
         ]);
+        
+        $notify = NotifyController::newSchedule($saveData, $request->connect_id, $myData->role);
 
         return redirect()->route('user.schedule')->with(['message' => "Schedule baru berhasil ditambahkan"]);
     }

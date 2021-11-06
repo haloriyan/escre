@@ -10,6 +10,7 @@ use Minishlink\WebPush\Subscription;
 use App\Models\Notification;
 use App\Mail\ScheduleConfirmation;
 use App\Mail\ScheduleReminder;
+use App\Mail\NewSchedule;
 use Illuminate\Http\Request;
 
 class NotifyController extends Controller
@@ -46,7 +47,7 @@ class NotifyController extends Controller
         $date = Carbon::parse($schedule->date);
 
         // $secretary->webpush_data = json_decode(base64_decode($secretary->webpush_data));
-        $headship->webpush_data = json_decode(base64_decode($headship->webpush_data));
+        // $headship->webpush_data = json_decode(base64_decode($headship->webpush_data));
 
         // $notifications[] = [
         //     'subscription' => Subscription::create([
@@ -54,25 +55,25 @@ class NotifyController extends Controller
         //     ]),
         //     'payload' => "Halo secretary"
         // ];
-        $notifications[] = [
-            'subscription' => Subscription::create([
-                'endpoint' => $headship->webpush_data->endpoint
-            ]),
-            'payload' => "Halo headship"
-        ];
-        $webPush = new WebPush();
-        foreach ($notifications as $notification) {
-            $webPush->queueNotification($notification['subscription'], $notification['payload']);
-        }
+        // $notifications[] = [
+        //     'subscription' => Subscription::create([
+        //         'endpoint' => $headship->webpush_data->endpoint
+        //     ]),
+        //     'payload' => "Halo headship"
+        // ];
+        // $webPush = new WebPush();
+        // foreach ($notifications as $notification) {
+        //     $webPush->queueNotification($notification['subscription'], $notification['payload']);
+        // }
 
-        // $sendMailSecretary = Mail::to($secretary->email)->send(new ScheduleReminder([
-        //     'schedule' => $schedule,
-        //     'user' => $secretary
-        // ]));
-        // $sendMailHeadship = Mail::to($headship->email)->send(new ScheduleReminder([
-        //     'schedule' => $schedule,
-        //     'user' => $headship
-        // ]));
+        $sendMailSecretary = Mail::to($secretary->email)->send(new ScheduleReminder([
+            'schedule' => $schedule,
+            'user' => $secretary
+        ]));
+        $sendMailHeadship = Mail::to($headship->email)->send(new ScheduleReminder([
+            'schedule' => $schedule,
+            'user' => $headship
+        ]));
 
         $notifySecretary = Notification::create([
             'user_id' => $secretary->id,
@@ -83,6 +84,31 @@ class NotifyController extends Controller
             'user_id' => $headship->id,
             'body' => "Schedule Anda ".$schedule->title." akan segera dimulai pada ".$date->format('H:i'),
             'action' => route('user.schedule', ['id' => $schedule->id]),
+        ]);
+    }
+    public static function newSchedule($schedule, $connectID, $createdBy) {
+        $connection = ConnectController::get([['id', $connectID]])->first();
+
+        if ($createdBy == "assistant") {
+            $userID = $connection->headship_id;
+            $body = "Anda diundang untuk schedule ".$schedule->title.". Klik untuk mengonfirmasi";
+
+            $sendMail = Mail::to($connection->secretaries->email)->send(new NewSchedule([
+                'schedule' => $schedule
+            ]));
+        } else {
+            $userID = $connection->secretary_id;
+            $body = "Anda diundang untuk schedule ".$schedule->title.". Klik untuk melihat informasi lengkap";
+            
+            $sendMail = Mail::to($connection->headships->email)->send(new NewSchedule([
+                'schedule' => $schedule
+            ]));
+        }
+
+        $notifyUser = Notification::create([
+            'user_id' => $userID,
+            'body' => $body,
+            'action' => route('user.schedule', ['id' => $schedule->id])
         ]);
     }
 }
