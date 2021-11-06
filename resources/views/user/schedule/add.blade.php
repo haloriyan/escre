@@ -15,7 +15,13 @@
 @section('content')
 <div class="bg-putih rounded bayangan-5 smallPadding">
     <div class="wrap">
-        <form action="{{ route('user.schedule.store') }}" method="POST">
+        @if (!$canCreateSchedule)
+            <div class="rata-tengah">
+                <h2>Anda mencapai batas maksimum untuk membuat schedule baru</h2>
+                <p>Tingkatkan ke premium untuk membuat schedule tanpa batas</p>
+            </div>
+        @endif
+        <form action="{{ route('user.schedule.store') }}" method="POST" class="{{ $canCreateSchedule ? '' : 'd-none' }}">
             {{ csrf_field() }}
             <div class="mt-2">Pilih Koneksi :</div>
             <select name="connect_id" class="box" required>

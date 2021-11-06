@@ -65,6 +65,14 @@
             <div class="text">Connects</div>
         </li>
     </a>
+    @if (!$myData->is_premium)
+        <a href="{{ route('user.premium') }}">
+            <li class="{{ Route::currentRouteName() == 'user.premium' ? 'active' : '' }}">
+                <div class="icon"><i class="fas fa-star"></i></div>
+                <div class="text">Menjadi Premium</div>
+            </li>
+        </a>
+    @endif
     <a href="{{ route('user.logout') }}">
         <li class="corner-top-left corner-top-right">
             <div class="icon"><i class="fas fa-sign-out-alt"></i></div>

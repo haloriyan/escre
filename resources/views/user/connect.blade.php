@@ -53,6 +53,13 @@
         @endif
     @else
         <h2>Mencari {{ displayRelation($relations[0]) }} "{{$request->username }}"</h2>
+        @if ($errors->count() != 0)
+            @foreach ($errors->all() as $err)
+                <div class="bg-merah-transparan rounded p-2 mb-3">
+                    {{ $err }}
+                </div>
+            @endforeach
+        @endif
         @if ($search == "" || $search->count() == 0)
             <p>Tidak ada data</p>
         @else

@@ -20,6 +20,8 @@ Route::post('profile', "UserController@updateProfile")->name("user.profile.updat
 Route::get('notification', "UserController@notification")->name("user.notification");
 
 Route::get('home', "UserController@home")->name("user.home")->middleware('User');
+Route::get('premium', "UserController@premium")->name("user.premium")->middleware('User');
+
 Route::group(['prefix' => "schedule"], function () {
     Route::get('add', "ScheduleController@add")->name("user.schedule.add")->middleware('User');
     Route::post('store', "ScheduleController@store")->name("user.schedule.store")->middleware('User');

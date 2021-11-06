@@ -22,9 +22,16 @@ class UserController extends Controller
                 ['user_id', $myData->id],
                 ['has_read', NULL]
             ])->orderBy('created_at', 'DESC')->get('id');
+
+            $myData->is_premium = self::isPremium($myData->premium_until);
         }
 
         return $myData;
+    }
+    public static function isPremium($due) {
+        $due = Carbon::parse($due);
+        $now = Carbon::now();
+        return $due >= $now;
     }
     public static function get($filter = NULL) {
         if ($filter == NULL) {
@@ -81,7 +88,7 @@ class UserController extends Controller
         $loggingOut = Auth::logout();
         return redirect()->route('user.loginPage')->with(['message' => "Berhasil logout"]);
     }
-    public function getMySchedules($query) {
+    public static function getMySchedules($query) {
         global $myData;
         $myData = self::me();
 
@@ -109,7 +116,7 @@ class UserController extends Controller
         $myData = self::me();
         $dateNow = date('Y-m-d');
         $query = ScheduleController::get([['date', 'LIKE', "%".$dateNow."%"]]);
-        $schedules = $this->getMySchedules($query)->get('id');
+        $schedules = self::getMySchedules($query)->get('id');
         $connects = $this->getMyConnect($myData)->get('id');
 
         return view('user.home', [
@@ -126,7 +133,7 @@ class UserController extends Controller
         $query = ScheduleController::get([
             ['date', '>=', $dateNow],
         ]);
-        $schedulesRaw = $this->getMySchedules($query)
+        $schedulesRaw = self::getMySchedules($query)
         ->orderBy('created_at', 'DESC')->take(20)
         ->get();
 
@@ -152,7 +159,7 @@ class UserController extends Controller
         $myData = self::me();
         $dateNow = date('Y-m-d H:i:s');
         $query = ScheduleController::get([['date', '<', $dateNow]]);
-        $schedules = $this->getMySchedules($query)
+        $schedules = self::getMySchedules($query)
         ->orderBy('created_at', 'DESC')
         ->paginate(20);
 
@@ -267,5 +274,12 @@ class UserController extends Controller
         ]);
 
         return response()->json(['status' => 200]);
+    }
+    public function premium() {
+        $myData = self::me();
+
+        return view('user.premium', [
+            'myData' => $myData
+        ]);
     }
 }

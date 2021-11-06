@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
@@ -19,9 +20,25 @@ class ScheduleController extends Controller
         $relation = $myData->role == "assistant" ? "headships.secretaries" : "secretaries.headships";
         $relations = explode(".", $relation);
         $user = User::where('id', $myData->id)->with($relation)->first();
+        $canCreateSchedule = true;
+
+        if (!$myData->is_premium) {
+            $dateNow = Carbon::now()->format('Y-m-d');
+            $query = ScheduleController::get([
+                ['date', '>=', $dateNow],
+            ]);
+            $schedules = UserController::getMySchedules($query)
+            ->orderBy('created_at', 'DESC')->take(20)
+            ->get('id');
+
+            if ($schedules->count() >= config('premium')['max_schedules']) {
+                $canCreateSchedule = false;
+            }
+        }
 
         return view('user.schedule.add', [
             'myData' => $myData,
+            'canCreateSchedule' => $canCreateSchedule,
             'relation' => $relation,
             'relations' => $relations,
             'user' => $user,

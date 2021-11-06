@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Connect;
 use Illuminate\Http\Request;
@@ -18,9 +19,20 @@ class ConnectController extends Controller
         $userID = $request->userID;
         $myData = UserController::me();
         $user = User::find($userID);
-        $whosAdding = $request->whosAdding;
+        $whosAdded = $request->whosAdding;
 
-        if ($whosAdding == "assistant") {
+        if (!$myData->is_premium) {
+            $dateNow = Carbon::now()->format('Y-m-d');
+            $relation = $myData->role == "assistant" ? "secretary_id" : "headship_id";
+            $connects = ConnectController::get([[$relation, $myData->id]])->get('id');
+            if ($connects->count() >= config('premium')['max_connects']) {
+                return redirect()->route('user.connect', ['username' => $user->username])->withErrors([
+                    'Anda tidak bisa menambahkan koneksi baru. Tingkatkan ke premium untuk memiliki koneksi tanpa batas'
+                ]);
+            }
+        }
+
+        if ($whosAdded == "assistant") {
             $toSave['secretary_id'] = $myData->id;
             $toSave['headship_id'] = $userID;
         } else {
