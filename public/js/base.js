@@ -179,3 +179,10 @@ function urlB64ToUint8Array(base64String) {
   }
   return outputArray;
 }
+
+const copyText = (txt, callback = null) => {
+    if (callback == null) {
+        callback = console.log('Text copied');
+    }
+    navigator.clipboard.writeText(txt).then(callback);
+}

@@ -25,6 +25,13 @@
             <div class="rata-tengah">
                 <input type="file" class="box withPreview" name="photo" onchange="inputFile(this, '.photo')">
                 <div class="photo uploadArea" bg-image="{{ asset($photo) }}"></div>
+
+                <div class="mt-1 pointer" onclick="salin('{{ $myData->username }}')">
+                    {{ "@".$myData->username }} <i class="fas fa-copy teks-kecil"></i>
+                </div>
+                <div class="bg-hijau-transparan rounded p-1 mt-1 teks-kecil d-none bagi" id="copyAlert">
+                    Username berhasil disalin
+                </div>
             </div>
             @if ($message != "")
                 <div class="bg-hijau-transparan rounded p-2 mt-3">
@@ -42,4 +49,17 @@
         </form>
     </div>
 </div>
+@endsection
+
+@section('javascript')
+<script>
+    const salin = teks => {
+        copyText(teks, () => {
+            select("#copyAlert").classList.remove('d-none');
+            setTimeout(() => {
+                select("#copyAlert").classList.add('d-none');
+            }, 1400);
+        });
+    }
+</script>
 @endsection

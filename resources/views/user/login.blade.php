@@ -30,9 +30,9 @@
         <div class="bagi bagi-2">
             belum punya akun? <a href="{{ route('user.registerPage') }}">register</a>
         </div>
-        <div class="bagi bagi-2 rata-kanan">
+        {{-- <div class="bagi bagi-2 rata-kanan">
             <a href="#">Lupa password?</a>
-        </div>
+        </div> --}}
     </div>
 </form>
 @endsection
