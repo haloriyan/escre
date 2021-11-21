@@ -33,6 +33,8 @@
     </form>
 </div>
 
+<div class="gember bottom"></div>
+
 <script src="{{ asset('js/base.js') }}"></script>
 @yield('javascript')
 
