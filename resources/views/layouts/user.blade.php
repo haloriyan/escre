@@ -86,6 +86,9 @@
     @yield('content')
 </div>
 
+<div class="gember top"></div>
+<div class="gember bottom"></div>
+
 <script src="{{ asset('js/base.js') }}"></script>
 <script>
     let swRegistration = null;
