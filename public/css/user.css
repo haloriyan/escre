@@ -85,17 +85,20 @@ nav.menu li .icon { width: 40px; }
 .gember {
     position: fixed;
     left: 0px;right: 0px;
+    width: 100%;
     height: 100px;
     opacity: 0.6;
-    background-size: 100% 100%;
+    background-size: cover;
 }
 .gember.top {
-    top: 80px;
-    background: url(../images/top.png) no-repeat center right;
+    top: 30px;
+    height: 200px;
+    background: url(../images/top.png) no-repeat;
+    background-position: center right;
 }
 .gember.bottom {
     bottom: 0px;
-    background: url(../images/bottom.png) no-repeat center right;
+    background: url(../images/bottom.png);
 }
 
 @media (max-width: 480px) {
