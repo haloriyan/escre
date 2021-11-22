@@ -16,6 +16,9 @@
         width: 130px;
         height: 130px;
     }
+    .content {
+        /* display: none; */
+    }
 </style>
 @endsection
 
@@ -51,37 +54,38 @@
                 </div>
             @endforeach
         @endif
-    @else
-        <h2>Mencari {{ displayRelation($relations[0]) }} "{{$request->username }}"</h2>
-        @if ($errors->count() != 0)
-            @foreach ($errors->all() as $err)
-                <div class="bg-merah-transparan rounded p-2 mb-3">
-                    {{ $err }}
-                </div>
-            @endforeach
-        @endif
-        @if ($search == "" || $search->count() == 0)
-            <p>Tidak ada data</p>
         @else
-            <div class="rata-tengah mt-5">
-                @php
-                    $photo = $search->photo == null ? "images/default.png" : "storage/user_photos/".$search->photo;
-                    $whosAdding = $relation == "headships" ? "assistant" : "headship";
-                @endphp
-                <div class="photo rounded-circle" bg-image="{{ asset($photo) }}"></div>
-                <h3 class="teks-besar mb-0">{{ $search->name }}</h3>
-                <p>{{ $search->email }}</p>
+            <h2>Mencari {{ displayRelation($relations[0]) }} "{{$request->username }}"</h2>
+            @if ($errors->count() != 0)
+                @foreach ($errors->all() as $err)
+                    <div class="bg-merah-transparan rounded p-2 mb-3">
+                        {{ $err }}
+                    </div>
+                @endforeach
+            @endif
+            @if ($search == "" || $search->count() == 0)
+                <p>Tidak ada data</p>
+            @else
+                <div class="rata-tengah mt-5">
+                    @php
+                        $photo = $search->photo == null ? "images/default.png" : "storage/user_photos/".$search->photo;
+                        $whosAdding = $relation == "headships" ? "assistant" : "headship";
+                    @endphp
+                    <div class="photo rounded-circle" bg-image="{{ asset($photo) }}"></div>
+                    <h3 class="teks-besar mb-0">{{ $search->name }}</h3>
+                    <p>{{ $search->email }}</p>
 
-                <form action="{{ route('user.connect.add') }}" method="POST">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="userID" value="{{ $search->id }}">
-                    <input type="hidden" name="whosAdding" value="{{ $whosAdding }}">
-                    <button class="primer">
-                        <i class="fas fa-plus mr-2 teks-kecil"></i> Tambahkan
-                    </button>
-                </form>
-            </div>
+                    <form action="{{ route('user.connect.add') }}" method="POST">
+                        {{ csrf_field() }}
+                        <input type="hidden" name="userID" value="{{ $search->id }}">
+                        <input type="hidden" name="whosAdding" value="{{ $whosAdding }}">
+                        <button class="primer">
+                            <i class="fas fa-plus mr-2 teks-kecil"></i> Tambahkan
+                        </button>
+                    </form>
+                </div>
+            @endif
         @endif
-    @endif
+    </div>
 </div>
 @endsection

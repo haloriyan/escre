@@ -44,7 +44,9 @@ a {
 }
 .gember.bottom {
     bottom: 0px !important;
-    background: url(../images/bottom.png);
+    background: url(../images/wave.png);
+    background-size: 100% 150px;
+    background-position: top right;
 }
 
 @media (max-width: 480px) {
